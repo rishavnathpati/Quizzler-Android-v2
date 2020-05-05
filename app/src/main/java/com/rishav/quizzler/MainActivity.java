@@ -13,7 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static com.rishav.quizzler.R.color.colorAccent;
 import static com.rishav.quizzler.R.color.colorPrimary;
+import static com.rishav.quizzler.R.color.colorPrimaryDark;
 
 
 public class MainActivity extends Activity
@@ -113,13 +115,16 @@ public class MainActivity extends Activity
         if (count == 0)
         {
             mRelativeLayout.setBackgroundColor(getResources().getColor(colorPrimary));
+            mChangeBackground.setBackgroundColor(getResources().getColor(colorPrimary));
         } else if (count == 1)
         {
             mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            mChangeBackground.setBackgroundColor(getResources().getColor(colorAccent));
         }
         else if(count == 2)
         {
             mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            mChangeBackground.setBackgroundColor(getResources().getColor(colorPrimaryDark));
         }
     }
 
