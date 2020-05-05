@@ -4,15 +4,20 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
 import static com.rishav.quizzler.R.color.colorAccent;
 import static com.rishav.quizzler.R.color.colorPrimary;
 import static com.rishav.quizzler.R.color.colorPrimaryDark;
@@ -110,21 +115,41 @@ public class MainActivity extends Activity
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void updateBackgroundColour(int count)
     {
+        Window window = getWindow();
+
         if (count == 0)
         {
             mRelativeLayout.setBackgroundColor(getResources().getColor(colorPrimary));
             mChangeBackground.setBackgroundColor(getResources().getColor(colorPrimary));
+            window.addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                window.setStatusBarColor(getResources().getColor(colorPrimary));
+            }
         } else if (count == 1)
         {
-            mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            mRelativeLayout.setBackgroundColor(getResources().getColor(colorAccent));
             mChangeBackground.setBackgroundColor(getResources().getColor(colorAccent));
-        }
-        else if(count == 2)
+            window.addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                window.setStatusBarColor(getResources().getColor(colorAccent));
+            }
+        } else if (count == 2)
         {
-            mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            mRelativeLayout.setBackgroundColor(getResources().getColor(colorPrimaryDark));
             mChangeBackground.setBackgroundColor(getResources().getColor(colorPrimaryDark));
+            window.addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                window.setStatusBarColor(getResources().getColor(colorPrimaryDark));
+            }
         }
     }
 
@@ -154,18 +179,34 @@ public class MainActivity extends Activity
         mScoreTextView.setText("Score " + mScore + "/" + mQuestionBank.length);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void checkAnswer(boolean userSelection)
     {
+        Window window = getWindow();
         boolean correctAnswer = mQuestionBank[mIndex].isAnswer();
         if (userSelection == correctAnswer)
         {
             Toast.makeText(getApplicationContext(), R.string.correct_toast, Toast.LENGTH_SHORT).show();
             mScore++;
-            mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorTrueButton));
+            mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorTrue));
+            mChangeBackground.setBackgroundColor(getResources().getColor(R.color.colorTrue));
+            window.addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                window.setStatusBarColor(getResources().getColor(R.color.colorTrue));
+            }
         } else
         {
             Toast.makeText(getApplicationContext(), R.string.incorrect_toast, Toast.LENGTH_SHORT).show();
-            mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorFalseButton));
+            mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorFalse));
+            mChangeBackground.setBackgroundColor(getResources().getColor(R.color.colorFalse));
+            window.addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                window.setStatusBarColor(getResources().getColor(R.color.colorFalse));
+            }
         }
     }
 
@@ -175,6 +216,5 @@ public class MainActivity extends Activity
         super.onSaveInstanceState(outState);
         outState.putInt("ScoreKey", mScore);
         outState.putInt("IndexKey", mIndex);
-
     }
 }

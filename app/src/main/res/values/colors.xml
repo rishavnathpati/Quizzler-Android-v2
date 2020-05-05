@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#2980b9</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorText">#ecf0f1</color>
-    <color name="colorTrueButton">#27ae60</color>
-    <color name="colorFalseButton">#c0392b</color>
+    <color name="colorFalseButton">#BD2110</color>
+    <color name="colorTrueButton">#1F8E17</color>
+    <color name="colorFalse">#C23616</color>
+    <color name="colorTrue">#24B90F</color>
 </resources>
