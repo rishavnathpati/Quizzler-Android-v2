@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -26,7 +28,7 @@ import static com.rishav.quizzler.R.color.colorPrimaryDark;
 public class MainActivity extends Activity
 {
     // TODO: Declare member variables here:
-    Button mTrueButton, mFalseButton, mChangeBackground;
+    Button mTrueButton, mFalseButton, mChangeBackground,mInfoButton;
     TextView mQuestionTextView;
     int mIndex, mQuestion, mScore, mCount;
     ProgressBar mProgressBar;
@@ -76,11 +78,49 @@ public class MainActivity extends Activity
         mProgressBar = findViewById(R.id.progress_bar);
         mChangeBackground = findViewById(R.id.background_change_button);
         mRelativeLayout = findViewById(R.id.backgroundRelativeLayout);
+        mInfoButton  = findViewById(R.id.info_button);
 
 
         mQuestion = mQuestionBank[mIndex].getQuestionID();
         mQuestionTextView.setText(mQuestion);
         mScoreTextView.setText("Score " + mScore + "/" + mQuestionBank.length);
+
+        mInfoButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                AlertDialog.Builder devInfo = new AlertDialog.Builder(MainActivity.this);
+                devInfo.setTitle("Dev Information");
+                devInfo.setMessage("Developer: Rishav Nath Pati" +
+                        "\nClick Github to visit Github profile");
+                devInfo.setCancelable(true);
+                devInfo.setPositiveButton("Github", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        goToUrl("https://github.com/rishavnathpati");
+                    }
+                });
+                devInfo.setNegativeButton("LinkedIn", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        goToUrl("https://www.linkedin.com/in/rishav-nath-p-67223bb9/");
+                    }
+                });
+                devInfo.show();
+            }
+
+            private void goToUrl(String url)
+            {
+                Uri uriUrl = Uri.parse(url);
+                Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+                startActivity(launchBrowser);
+            }
+        });
 
         mChangeBackground.setOnClickListener(new View.OnClickListener()
         {
@@ -88,7 +128,10 @@ public class MainActivity extends Activity
             public void onClick(View view)
             {
                 Log.d("Background", "Background to be changed");
-                updateBackgroundColour(mCount);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    updateBackgroundColour(mCount);
+                }
                 mCount = (mCount + 1) % 3;
             }
         });
@@ -98,7 +141,10 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View view)
             {
-                checkAnswer(true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    checkAnswer(true);
+                }
                 updateQuestion();
             }
         });
@@ -108,7 +154,10 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View view)
             {
-                checkAnswer(false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    checkAnswer(false);
+                }
                 updateQuestion();
             }
         });
@@ -188,24 +237,24 @@ public class MainActivity extends Activity
         {
             Toast.makeText(getApplicationContext(), R.string.correct_toast, Toast.LENGTH_SHORT).show();
             mScore++;
-            mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorTrue));
-            mChangeBackground.setBackgroundColor(getResources().getColor(R.color.colorTrue));
+            mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorGreenLight));
+            mChangeBackground.setBackgroundColor(getResources().getColor(R.color.colorGreenLight));
             window.addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             {
-                window.setStatusBarColor(getResources().getColor(R.color.colorTrue));
+                window.setStatusBarColor(getResources().getColor(R.color.colorGreenLight));
             }
         } else
         {
             Toast.makeText(getApplicationContext(), R.string.incorrect_toast, Toast.LENGTH_SHORT).show();
-            mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorFalse));
-            mChangeBackground.setBackgroundColor(getResources().getColor(R.color.colorFalse));
+            mRelativeLayout.setBackgroundColor(getResources().getColor(R.color.colorRedLight));
+            mChangeBackground.setBackgroundColor(getResources().getColor(R.color.colorRedLight));
             window.addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             {
-                window.setStatusBarColor(getResources().getColor(R.color.colorFalse));
+                window.setStatusBarColor(getResources().getColor(R.color.colorRedLight));
             }
         }
     }
