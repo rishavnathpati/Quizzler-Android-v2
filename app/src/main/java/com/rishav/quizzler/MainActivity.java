@@ -93,8 +93,16 @@ public class MainActivity extends Activity
                 AlertDialog.Builder devInfo = new AlertDialog.Builder(MainActivity.this);
                 devInfo.setTitle("Dev Information");
                 devInfo.setMessage("Developer: Rishav Nath Pati" +
-                        "\nClick Github to visit Github profile");
+                        "\nClick the links below to visit profiles");
                 devInfo.setCancelable(true);
+                devInfo.setNeutralButton("Facebook", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        goToUrl("https://www.facebook.com/rishav.pati.1");
+                    }
+                });
                 devInfo.setPositiveButton("Github", new DialogInterface.OnClickListener()
                 {
                     @Override
